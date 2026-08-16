@@ -94,10 +94,10 @@ canvas#confetti{position:fixed;top:0;left:0;width:100%;height:100%;pointer-event
   <button class="level-btn lv5" onclick="startLevel(4)"><span class="lv-icon">🔥</span><span class="lv-name"></span><span class="lv-tag"></span></button>
 </div>
 <div id="top-bar">
-  <button class="icon-btn" id="menu-btn">☰</button>
+  <button class="icon-btn" id="menu-btn" aria-label="Menu">☰</button>
   <h1>🌟 Letter Land 🌟</h1>
-  <button id="lang-btn">🇬🇧 EN</button>
-  <button class="icon-btn" id="mute-btn">🔊</button>
+  <button id="lang-btn" aria-label="Switch language">🇬🇧 EN</button>
+  <button class="icon-btn" id="mute-btn" aria-label="Mute sound">🔊</button>
 </div>
 <div id="level-badge">Level 1</div>
 <div id="voice-status"></div>
@@ -120,26 +120,31 @@ canvas#confetti{position:fixed;top:0;left:0;width:100%;height:100%;pointer-event
 <div id="openmoji-credit">Pictures: <a href="https://openmoji.org" target="_blank">OpenMoji</a> CC BY-SA 4.0</div>
 <script>
 const MOJI="https://cdn.jsdelivr.net/npm/openmoji@15.1.0/color/svg/";
-const EMOJI_MAP={
-  CAT:"1F431",DOG:"1F436",SUN:"2600",HOP:"1F430",BIG:"1F98A",RUN:"1F3C3",TOP:"1F3A9",MOM:"1F469",DAD:"1F468",FUN:"1F973",
-  CUP:"2615",PEN:"1F58A",HAT:"1F9E2",MAP:"1F5FA",BED:"1F6CF",LOG:"1FAB5",PIN:"1F4CC",BOX:"1F4E6",NET:"1F3B8",JAM:"1F353",
-  JUMP:"1F3C3",PLAY:"26BD",CAKE:"1F370",BIRD:"1F426",FISH:"1F41F",STAR:"2B50",FROG:"1F438",TREE:"1F333",DUCK:"1F986",RAIN:"1F327",
-  BALL:"26BD",PINK:"1F338",BLUE:"1F4A7",KITE:"1FA81",OPEN:"1F513",READ:"1F4DA",LOVE:"2764",CUTE:"1F431",WILD:"1F98A",COOL:"1F60E",
-  FARM:"1F69C",LAMP:"1FA94",ROPE:"1F9F5",GATE:"1F6AA",MILK:"1F95B",NEST:"1F426",POND:"1F40C",VEST:"1F9BA",WOLF:"1F43A",YELL:"1F4E3",
-  CLAM:"1F9AA",DRIP:"1F4A7",ECHO:"1F3A4",FLIP:"1F3C4",GLOW:"1F4A1",HUNT:"1F3F9",BREW:"2615",
-  BLEND:"1F9C3",CRISP:"1F96C",FLINT:"1F525",GRASP:"1F91D",JEWEL:"1F48E",QUILT:"1F9F6",SHRUB:"1F333",THYME:"1F33F",
-  VIVID:"1F308",WHISK:"1F373",FUNGI:"1F344",STOMP:"1F9B6",
-  SOL:"2600",MAR:"1F30A",PEZ:"1F41F",OSO:"1F43B",UVA:"1F347",PAN:"1F35E",RIO:"1F3DE",BUS:"1F68C",DIA:"1F31E",PAZ:"262E",
-  GEL:"1F9F4",OJO:"1F441",ECO:"1F333",COL:"1F96C",MIL:"1F522",
-  GATO:"1F431",LUNA:"1F315",PATO:"1F986",ROSA:"1F339",NUBE:"2601",PINO:"1F332",VACA:"1F404",ROCA:"1FAA8",MESA:"1F4CB",LAGO:"1F30A",
-  BOCA:"1F444",HOJA:"1F343",MANO:"1F44B",PELO:"1F9B1",TORO:"1F402",CAMA:"1F6CF",FLOR:"1F338",FUEGO:"1F525",CIELO:"1F305",LEGO:"1F9F1",
-  PERRO:"1F415",CAMPO:"1F33E",LIBRO:"1F4D6",GLOBO:"1F388",PUERTA:"1F6AA",HELADO:"1F368",JARDIN:"1F33B",TIGRE:"1F405",PLUMA:"1FAB6",
-  COCHE:"1F697",BANCO:"1F3E6",FRESA:"1F353",LIMON:"1F34B",PALMA:"1F334",VIENTO:"1F4A8",TRAJE:"1F454",PREMIO:"1F3C6",PIRATA:"1F3F4",
-  ESTRELLA:"2B50",MARIPOSA:"1F98B",ELEFANTE:"1F418",PRINCESA:"1F478",CHOCOLATE:"1F36B",GIRASOL:"1F33B",AVENTURA:"1F5FA",
-  ESCALERA:"1F9F1",EXPLORADOR:"1F9ED",UNIVERSO:"1F30C",TORMENTA:"26A1",SUBMARINO:"1F6A2",BRILLANTE:"1F4A5",ACUARELA:"1F3A8",
-  FANTASIA:"1F984",SABIDURIA:"1F989",LABORATORIO:"1F9EA",MURCIELAGO:"1F987",DINOSAURIO:"1F996"
+
+// Self-contained dictionary mapping words to OpenMoji hex codepoints
+const DICTIONARY={
+  emojiMap:{
+    CAT:"1F431",DOG:"1F436",SUN:"2600",HOP:"1F430",BIG:"1F98A",RUN:"1F3C3",TOP:"1F3A9",MOM:"1F469",DAD:"1F468",FUN:"1F973",
+    CUP:"2615",PEN:"1F58A",HAT:"1F9E2",MAP:"1F5FA",BED:"1F6CF",LOG:"1FAB5",PIN:"1F4CC",BOX:"1F4E6",NET:"1F3B8",JAM:"1F353",
+    JUMP:"1F3C3",PLAY:"26BD",CAKE:"1F370",BIRD:"1F426",FISH:"1F41F",STAR:"2B50",FROG:"1F438",TREE:"1F333",DUCK:"1F986",RAIN:"1F327",
+    BALL:"26BD",PINK:"1F338",BLUE:"1F4A7",KITE:"1FA81",OPEN:"1F513",READ:"1F4DA",LOVE:"2764",CUTE:"1F431",WILD:"1F98A",COOL:"1F60E",
+    FARM:"1F69C",LAMP:"1FA94",ROPE:"1F9F5",GATE:"1F6AA",MILK:"1F95B",NEST:"1F426",POND:"1F40C",VEST:"1F9BA",WOLF:"1F43A",YELL:"1F4E3",
+    CLAM:"1F9AA",DRIP:"1F4A7",ECHO:"1F3A4",FLIP:"1F3C4",GLOW:"1F4A1",HUNT:"1F3F9",BREW:"2615",
+    BLEND:"1F9C3",CRISP:"1F96C",FLINT:"1F525",GRASP:"1F91D",JEWEL:"1F48E",QUILT:"1F9F6",SHRUB:"1F33F",THYME:"1F33F",
+    VIVID:"1F308",WHISK:"1F373",FUNGI:"1F344",STOMP:"1F9B6",
+    SOL:"2600",MAR:"1F30A",PEZ:"1F41F",OSO:"1F43B",UVA:"1F347",PAN:"1F35E",RIO:"1F3DE",BUS:"1F68C",DIA:"1F31E",PAZ:"262E",
+    GEL:"1F9F4",OJO:"1F441",ECO:"1F333",COL:"1F96C",MIL:"1F522",
+    GATO:"1F431",LUNA:"1F315",PATO:"1F986",ROSA:"1F339",NUBE:"2601",PINO:"1F332",VACA:"1F404",ROCA:"1FAA8",MESA:"1F4CB",LAGO:"1F30A",
+    BOCA:"1F444",HOJA:"1F343",MANO:"1F44B",PELO:"1F9B1",TORO:"1F402",CAMA:"1F6CF",FLOR:"1F338",FUEGO:"1F525",CIELO:"1F305",LEGO:"1F9F1",
+    PERRO:"1F415",CAMPO:"1F33E",LIBRO:"1F4D6",GLOBO:"1F388",PUERTA:"1F6AA",HELADO:"1F368",JARDIN:"1F33B",TIGRE:"1F405",PLUMA:"1FAB6",
+    COCHE:"1F697",BANCO:"1F3E6",FRESA:"1F353",LIMON:"1F34B",PALMA:"1F334",VIENTO:"1F4A8",TRAJE:"1F454",PREMIO:"1F3C6",PIRATA:"1F3F4",
+    ESTRELLA:"2B50",MARIPOSA:"1F98B",ELEFANTE:"1F418",PRINCESA:"1F478",CHOCOLATE:"1F36B",GIRASOL:"1F33B",AVENTURA:"1F5FA",
+    ESCALERA:"1F9F1",EXPLORADOR:"1F9ED",UNIVERSO:"1F30C",TORMENTA:"26A1",SUBMARINO:"1F6A2",BRILLANTE:"1F4A5",ACUARELA:"1F3A8",
+    FANTASIA:"1F984",SABIDURIA:"1F989",LABORATORIO:"1F9EA",MURCIELAGO:"1F987",DINOSAURIO:"1F996"
+  }
 };
-function getEmojiUrl(w){const c=EMOJI_MAP[w.toUpperCase()];return c?MOJI+c+".svg":null}
+const EMOJI_MAP=DICTIONARY.emojiMap;
+function getEmojiUrl(w){const c=DICTIONARY.emojiMap[w.toUpperCase()];return c?MOJI+c+".svg":null}
 function showPicture(word){
   const area=document.getElementById("pic-area"),ph=document.getElementById("pic-placeholder");
   const old=area.querySelector("img");if(old)old.remove();
@@ -189,7 +194,11 @@ function pickVoice(){if(!window.speechSynthesis)return;const vs=speechSynthesis.
 function speakText(text,rate,pitch){if(muted||!window.speechSynthesis)return;speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(text);if(voice)u.voice=voice;u.rate=rate||0.85;u.pitch=pitch||1.2;u.volume=1;u.lang=LANG[lang].voiceLang;speechSynthesis.speak(u)}
 function speakLetter(l){speakText(l,0.8,1.3)}
 function speakWord(w){speakText(w.toLowerCase(),0.75,1.2)}
-function getACtx(){if(!audioCtx)audioCtx=new(window.AudioContext||window.webkitAudioContext)();return audioCtx}
+function getACtx(){
+  if(!audioCtx)audioCtx=new(window.AudioContext||window.webkitAudioContext)();
+  if(audioCtx&&audioCtx.state==="suspended")audioCtx.resume();
+  return audioCtx;
+}
 function playMagic(){if(muted)return;try{const ctx=getACtx();[523.25,659.25,783.99,1046.5,1318.5,1567.98,2093].forEach((f,i)=>{const o=ctx.createOscillator(),g=ctx.createGain(),t=ctx.currentTime+i*0.07;o.type=i%2===0?"sine":"triangle";o.frequency.setValueAtTime(f,t);g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(0.2,t+0.03);g.gain.exponentialRampToValueAtTime(0.001,t+0.45);o.connect(g);g.connect(ctx.destination);o.start(t);o.stop(t+0.5)});for(let s=0;s<5;s++){const o=ctx.createOscillator(),g=ctx.createGain(),t=ctx.currentTime+s*0.09+0.04;o.type="sine";o.frequency.setValueAtTime(1800+Math.random()*1200,t);g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(0.06,t+0.02);g.gain.exponentialRampToValueAtTime(0.001,t+0.3);o.connect(g);g.connect(ctx.destination);o.start(t);o.stop(t+0.35)}}catch(e){}}
 function playTick(){if(muted)return;try{const ctx=getACtx(),o=ctx.createOscillator(),g=ctx.createGain(),t=ctx.currentTime;o.type="sine";o.frequency.setValueAtTime(880,t);g.gain.setValueAtTime(0.08,t);g.gain.exponentialRampToValueAtTime(0.001,t+0.08);o.connect(g);g.connect(ctx.destination);o.start(t);o.stop(t+0.1)}catch(e){}}
 function playTimeUp(){if(muted)return;try{const ctx=getACtx();[400,300,220].forEach((f,i)=>{const o=ctx.createOscillator(),g=ctx.createGain(),t=ctx.currentTime+i*0.18;o.type="sawtooth";o.frequency.setValueAtTime(f,t);g.gain.setValueAtTime(0.15,t);g.gain.exponentialRampToValueAtTime(0.001,t+0.16);o.connect(g);g.connect(ctx.destination);o.start(t);o.stop(t+0.2)})}catch(e){}}
@@ -198,7 +207,7 @@ function updateTimerUI(){const arc=document.getElementById("timer-arc"),num=docu
 function stopTimer(){clearInterval(timerInterval);document.getElementById("timer-ring").style.display="none"}
 function onTimeout(){playTimeUp();const fl=document.getElementById("timeout-flash");fl.style.display="block";setTimeout(()=>fl.style.display="none",400);for(let i=currentIdx;i<currentWord.length;i++){const t=document.getElementById("tile-"+i);if(t){t.classList.remove("waiting","idle","jumping");t.classList.add("timeout")}}document.querySelectorAll(".kb-key").forEach(k=>k.classList.remove("highlight"));setTimeout(()=>nextItem(),900)}
 function shuffle(a){let r=[...a];for(let i=r.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[r[i],r[j]]=[r[j],r[i]]}return r}
-function buildKeyboard(){const area=document.getElementById("keyboard-area");area.innerHTML="";KB_ROWS.forEach(row=>{const d=document.createElement("div");d.className="kb-row";row.split("").forEach(l=>{const k=document.createElement("div");k.className="kb-key";k.textContent=l;k.id="key-"+l;k.addEventListener("pointerdown",e=>{e.preventDefault();handleInput(l)});d.appendChild(k)});area.appendChild(d)})}
+function buildKeyboard(){const area=document.getElementById("keyboard-area");area.innerHTML="";KB_ROWS.forEach(row=>{const d=document.createElement("div");d.className="kb-row";row.split("").forEach(l=>{const k=document.createElement("div");k.className="kb-key";k.textContent=l;k.id="key-"+l;k.setAttribute("role","button");k.setAttribute("tabindex","0");k.setAttribute("aria-label","Key "+l);k.addEventListener("pointerdown",e=>{e.preventDefault();handleInput(l)});d.appendChild(k)});area.appendChild(d)})}
 function buildStars(){const row=document.getElementById("stars-row");row.innerHTML="";for(let i=0;i<ITEMS_PER_LEVEL;i++){const s=document.createElement("span");s.className="star";s.textContent="⭐";s.id="star-"+i;row.appendChild(s)}}
 function updateProgress(){document.getElementById("progress-bar").style.width=(levelItemsDone/ITEMS_PER_LEVEL*100)+"%"}
 function highlightNextKey(){document.querySelectorAll(".kb-key").forEach(k=>k.classList.remove("highlight"));const ch=currentWord[currentIdx];if(!ch)return;const k=document.getElementById("key-"+ch);if(k)k.classList.add("highlight")}
@@ -215,7 +224,18 @@ function launchConfetti(){const canvas=document.getElementById("confetti"),ctx=c
 document.getElementById("mute-btn").addEventListener("click",()=>{muted=!muted;document.getElementById("mute-btn").textContent=muted?"🔇":"🔊";if(muted&&window.speechSynthesis)speechSynthesis.cancel()});
 document.getElementById("menu-btn").addEventListener("click",()=>{stopTimer();showMenu()});
 document.getElementById("lang-btn").addEventListener("click",()=>{setLang(lang==="en"?"es":"en")});
-document.addEventListener("keydown",e=>{const l=e.key.toUpperCase();if(/^[A-Z]$/.test(l)){const k=document.getElementById("key-"+l);if(k){k.classList.add("pressed");setTimeout(()=>k.classList.remove("pressed"),150)}handleInput(l)}});
+document.addEventListener("keydown",e=>{
+  if(document.getElementById("overlay").classList.contains("show"))return;
+  const l=e.key.toUpperCase();
+  if(/^[A-Z]$/.test(l)){
+    const k=document.getElementById("key-"+l);
+    if(k){
+      k.classList.add("pressed");
+      setTimeout(()=>k.classList.remove("pressed"),150);
+    }
+    handleInput(l);
+  }
+});
 initVoice();refreshOverlay();document.getElementById("hint-text").textContent=LANG[lang].hint;
 </script>
 </body>
