@@ -121,17 +121,80 @@ canvas#confetti{position:fixed;top:0;left:0;width:100%;height:100%;pointer-event
 <script>
 const MOJI="https://cdn.jsdelivr.net/npm/openmoji@15.1.0/color/svg/";
 
-// Self-contained dictionary mapping words to OpenMoji hex codepoints
+// Self-contained main dictionary with definitions, image URIs, and fallback emoji codepoints
 const DICTIONARY={
+  words:{
+    CAT:{definition:"A small domesticated carnivorous mammal with soft fur.",imageUri:"",emoji:"1F431"},
+    DOG:{definition:"A domesticated carnivorous mammal that typically has a long snout and a barking voice.",imageUri:"",emoji:"1F436"},
+    SUN:{definition:"The star around which the earth orbits.",imageUri:"",emoji:"2600"},
+    HOP:{definition:"Move by jumping on one foot.",imageUri:"",emoji:"1F430"},
+    BIG:{definition:"Of considerable size, extent, or intensity.",imageUri:"",emoji:"1F98A"},
+    RUN:{definition:"Move at a speed faster than a walk.",imageUri:"",emoji:"1F3C3"},
+    TOP:{definition:"The highest or uppermost point, part, or surface of something.",imageUri:"",emoji:"1F3A9"},
+    MOM:{definition:"One's mother.",imageUri:"",emoji:"1F469"},
+    DAD:{definition:"One's father.",imageUri:"",emoji:"1F468"},
+    FUN:{definition:"Enjoyment, amusement, or lighthearted pleasure.",imageUri:"",emoji:"1F973"},
+    CUP:{definition:"A small bowl-shaped container for drinking from.",imageUri:"",emoji:"2615"},
+    PEN:{definition:"An instrument for writing or drawing with ink.",imageUri:"",emoji:"1F58A"},
+    HAT:{definition:"A shaped covering for the head worn for warmth or fashion.",imageUri:"",emoji:"1F9E2"},
+    MAP:{definition:"A diagrammatic representation of an area of land or sea.",imageUri:"",emoji:"1F5FA"},
+    BED:{definition:"A piece of furniture for sleep or rest.",imageUri:"",emoji:"1F6CF"},
+    LOG:{definition:"A part of the trunk or a large branch of a tree that has fallen or been cut off.",imageUri:"",emoji:"1FAB5"},
+    PIN:{definition:"A thin piece of metal used for fastening objects together.",imageUri:"",emoji:"1F4CC"},
+    BOX:{definition:"A container with a flat base and sides, typically square or rectangular.",imageUri:"",emoji:"1F4E6"},
+    NET:{definition:"A mesh of string, cord, or rope for catching fish or playing sports.",imageUri:"",emoji:"1F3B8"},
+    JAM:{definition:"A sweet spread made from fruit cooked with sugar.",imageUri:"",emoji:"1F353"},
+    JUMP:{definition:"Push oneself off a surface and into the air by using the legs.",imageUri:"",emoji:"1F3C3"},
+    PLAY:{definition:"Engage in activity for enjoyment and recreation rather than a serious purpose.",imageUri:"",emoji:"26BD"},
+    CAKE:{definition:"A sweet baked food made from flour, sugar, and other ingredients.",imageUri:"",emoji:"1F370"},
+    BIRD:{definition:"A warm-blooded egg-laying vertebrate distinguished by feathers, wings, and a beak.",imageUri:"",emoji:"1F426"},
+    FISH:{definition:"A limbless cold-blooded vertebrate animal with gills and fins living wholly in water.",imageUri:"",emoji:"1F41F"},
+    STAR:{definition:"A fixed luminous point in the night sky which is a large, remote incandescent body.",imageUri:"",emoji:"2B50"},
+    FROG:{definition:"A tailless amphibian with a short squat body and very long hind legs for leaping.",imageUri:"",emoji:"1F438"},
+    TREE:{definition:"A woody perennial plant, typically having a single stem or trunk growing to a considerable height.",imageUri:"",emoji:"1F333"},
+    DUCK:{definition:"A waterbird with a broad blunt bill, short legs, and webbed feet.",imageUri:"",emoji:"1F986"},
+    RAIN:{definition:"Moisture condensed from the atmosphere that falls in drops.",imageUri:"",emoji:"1F327"},
+    BALL:{definition:"A solid or hollow sphere or ovoid object used in a game.",imageUri:"",emoji:"26BD"},
+    PINK:{definition:"A pale red color.",imageUri:"",emoji:"1F338"},
+    BLUE:{definition:"A color intermediate between green and violet.",imageUri:"",emoji:"1F4A7"},
+    KITE:{definition:"A toy consisting of a light frame covered with paper or cloth flown in the wind at the end of a string.",imageUri:"",emoji:"1FA81"},
+    OPEN:{definition:"Allowing access, passage, or a view through an empty space.",imageUri:"",emoji:"1F513"},
+    READ:{definition:"Look at and comprehend the meaning of written or printed matter.",imageUri:"",emoji:"1F4DA"},
+    LOVE:{definition:"An intense feeling of deep affection.",imageUri:"",emoji:"2764"},
+    CUTE:{definition:"Attractive in a pretty or endearing way.",imageUri:"",emoji:"1F431"},
+    WILD:{definition:"Living or growing in the natural environment, not domesticated.",imageUri:"",emoji:"1F98A"},
+    COOL:{definition:"Fairly cold, or fashionably attractive.",imageUri:"",emoji:"1F60E"},
+    FARM:{definition:"An area of land and its buildings used for growing crops and rearing animals.",imageUri:"",emoji:"1F69C"},
+    LAMP:{definition:"A device for giving light.",imageUri:"",emoji:"1FA94"},
+    ROPE:{definition:"A length of thick strong cord made by twisting together strands of hemp or other fiber.",imageUri:"",emoji:"1F9F5"},
+    GATE:{definition:"A hinged barrier used to close an opening in a wall, fence, or hedge.",imageUri:"",emoji:"1F6AA"},
+    MILK:{definition:"A white liquid produced by mammals as food for their young.",imageUri:"",emoji:"1F95B"},
+    NEST:{definition:"A structure built by a bird or animal to hold its eggs and young.",imageUri:"",emoji:"1F426"},
+    POND:{definition:"A small body of still water formed naturally or by hollowing or embanking.",imageUri:"",emoji:"1F40C"},
+    VEST:{definition:"A garment worn on the upper part of the body.",imageUri:"",emoji:"1F9BA"},
+    WOLF:{definition:"A wild carnivorous mammal of the dog family.",imageUri:"",emoji:"1F43A"},
+    YELL:{definition:"Give a loud, sharp cry or shout.",imageUri:"",emoji:"1F4E3"},
+    CLAM:{definition:"A marine bivalve mollusk with a shell.",imageUri:"",emoji:"1F9AA"},
+    DRIP:{definition:"Let fall drops of liquid.",imageUri:"",emoji:"1F4A7"},
+    ECHO:{definition:"A sound or series of sounds caused by the reflection of sound waves.",imageUri:"",emoji:"1F3A4"},
+    FLIP:{definition:"Turn over with a sudden quick movement.",imageUri:"",emoji:"1F3C4"},
+    GLOW:{definition:"Emit a steady light without flame.",imageUri:"",emoji:"1F4A1"},
+    HUNT:{definition:"Pursue and kill a wild animal for sport or food.",imageUri:"",emoji:"1F3F9"},
+    BREW:{definition:"Make beer or tea by soaking, boiling, and fermentation.",imageUri:"",emoji:"2615"},
+    BLEND:{definition:"Mix a substance with another so that they combine together.",imageUri:"",emoji:"1F9C3"},
+    CRISP:{definition:"Firm, dry, and brittle surface.",imageUri:"",emoji:"1F96C"},
+    FLINT:{definition:"A hard gray rock used to produce sparks.",imageUri:"",emoji:"1F525"},
+    GRASP:{definition:"Seize and hold firmly.",imageUri:"",emoji:"1F91D"},
+    JEWEL:{definition:"A precious stone.",imageUri:"",emoji:"1F48E"},
+    QUILT:{definition:"A warm bed covering made of padding enclosed between layers of fabric.",imageUri:"",emoji:"1F9F6"},
+    SHRUB:{definition:"A woody plant which is smaller than a tree and has several main stems.",imageUri:"",emoji:"1F33F"},
+    THYME:{definition:"A low-growing aromatic plant of the mint family used as a culinary herb.",imageUri:"",emoji:"1F33F"},
+    VIVID:{definition:"Producing powerful feelings or strong, clear images in the mind.",imageUri:"",emoji:"1F308"},
+    WHISK:{definition:"Beat or stir a substance with a light, rapid movement.",imageUri:"",emoji:"1F373"},
+    FUNGI:{definition:"Spore-producing organisms feeding on organic matter, including molds and mushrooms.",imageUri:"",emoji:"1F344"},
+    STOMP:{definition:"Tread heavily in a surface.",imageUri:"",emoji:"1F9B6"}
+  },
   emojiMap:{
-    CAT:"1F431",DOG:"1F436",SUN:"2600",HOP:"1F430",BIG:"1F98A",RUN:"1F3C3",TOP:"1F3A9",MOM:"1F469",DAD:"1F468",FUN:"1F973",
-    CUP:"2615",PEN:"1F58A",HAT:"1F9E2",MAP:"1F5FA",BED:"1F6CF",LOG:"1FAB5",PIN:"1F4CC",BOX:"1F4E6",NET:"1F3B8",JAM:"1F353",
-    JUMP:"1F3C3",PLAY:"26BD",CAKE:"1F370",BIRD:"1F426",FISH:"1F41F",STAR:"2B50",FROG:"1F438",TREE:"1F333",DUCK:"1F986",RAIN:"1F327",
-    BALL:"26BD",PINK:"1F338",BLUE:"1F4A7",KITE:"1FA81",OPEN:"1F513",READ:"1F4DA",LOVE:"2764",CUTE:"1F431",WILD:"1F98A",COOL:"1F60E",
-    FARM:"1F69C",LAMP:"1FA94",ROPE:"1F9F5",GATE:"1F6AA",MILK:"1F95B",NEST:"1F426",POND:"1F40C",VEST:"1F9BA",WOLF:"1F43A",YELL:"1F4E3",
-    CLAM:"1F9AA",DRIP:"1F4A7",ECHO:"1F3A4",FLIP:"1F3C4",GLOW:"1F4A1",HUNT:"1F3F9",BREW:"2615",
-    BLEND:"1F9C3",CRISP:"1F96C",FLINT:"1F525",GRASP:"1F91D",JEWEL:"1F48E",QUILT:"1F9F6",SHRUB:"1F33F",THYME:"1F33F",
-    VIVID:"1F308",WHISK:"1F373",FUNGI:"1F344",STOMP:"1F9B6",
     SOL:"2600",MAR:"1F30A",PEZ:"1F41F",OSO:"1F43B",UVA:"1F347",PAN:"1F35E",RIO:"1F3DE",BUS:"1F68C",DIA:"1F31E",PAZ:"262E",
     GEL:"1F9F4",OJO:"1F441",ECO:"1F333",COL:"1F96C",MIL:"1F522",
     GATO:"1F431",LUNA:"1F315",PATO:"1F986",ROSA:"1F339",NUBE:"2601",PINO:"1F332",VACA:"1F404",ROCA:"1FAA8",MESA:"1F4CB",LAGO:"1F30A",
@@ -143,12 +206,20 @@ const DICTIONARY={
     FANTASIA:"1F984",SABIDURIA:"1F989",LABORATORIO:"1F9EA",MURCIELAGO:"1F987",DINOSAURIO:"1F996"
   }
 };
-const EMOJI_MAP=DICTIONARY.emojiMap;
-function getEmojiUrl(w){const c=DICTIONARY.emojiMap[w.toUpperCase()];return c?MOJI+c+".svg":null}
+function getPictureUrl(w){
+  const key=w.toUpperCase();
+  const entry=DICTIONARY.words[key];
+  if(entry){
+    if(entry.imageUri)return entry.imageUri;
+    if(entry.emoji)return MOJI+entry.emoji+".svg";
+  }
+  const hex=DICTIONARY.emojiMap[key];
+  return hex?MOJI+hex+".svg":null;
+}
 function showPicture(word){
   const area=document.getElementById("pic-area"),ph=document.getElementById("pic-placeholder");
   const old=area.querySelector("img");if(old)old.remove();
-  const url=getEmojiUrl(word);
+  const url=getPictureUrl(word);
   if(!url){ph.style.display="block";area.classList.remove("has-img");return}
   ph.style.display="none";area.classList.add("has-img");
   const img=document.createElement("img");img.src=url;img.alt=word;img.className="pop";
