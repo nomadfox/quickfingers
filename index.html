@@ -71,6 +71,9 @@ canvas#confetti{position:fixed;top:0;left:0;width:100%;height:100%;pointer-event
 .olang-btn{font-family:'Fredoka One',cursive;font-size:1rem;padding:7px 20px;border-radius:12px;border:3px solid #e2e8f0;background:#fff;color:#374151;cursor:pointer;transition:all 0.15s;touch-action:manipulation}
 .olang-btn.active{background:#f97316;border-color:#ea580c;color:#fff}
 #timeout-flash{display:none;position:fixed;inset:0;background:rgba(239,68,68,0.15);z-index:50;pointer-events:none}
+#mouse-maze-link{font-size:11px;color:#9ca3af;text-decoration:none;margin-top:4px;transition:color 0.2s}
+#mouse-maze-link:hover{color:#6b7280;text-decoration:underline}
+#mouse-maze-link .desc{font-size:11px;color:#9ca3af;font-weight:400}
 #openmoji-credit{font-size:10px;color:#d1d5db;text-align:center;margin-top:8px}
 #openmoji-credit a{color:#c4b5fd;text-decoration:none}
 @media(max-width:400px){.kb-key{width:34px;height:40px;font-size:0.9rem}.kb-row{gap:3px}.letter-tile{width:62px;height:72px;font-size:2.5rem}}
@@ -92,6 +95,7 @@ canvas#confetti{position:fixed;top:0;left:0;width:100%;height:100%;pointer-event
   <button class="level-btn lv3" onclick="startLevel(2)"><span class="lv-icon">📖</span><span class="lv-name"></span><span class="lv-tag"></span></button>
   <button class="level-btn lv4" onclick="startLevel(3)"><span class="lv-icon">⏱</span><span class="lv-name"></span><span class="lv-tag"></span></button>
   <button class="level-btn lv5" onclick="startLevel(4)"><span class="lv-icon">🔥</span><span class="lv-name"></span><span class="lv-tag"></span></button>
+  <a id="mouse-maze-link" href="https://nomadfox.github.io/MouseMaze/" target="_blank" rel="noopener">MouseMaze <span class="desc">- mouse labyrinth game</span></a>
 </div>
 <div id="top-bar">
   <button class="icon-btn" id="menu-btn" aria-label="Menu">☰</button>
